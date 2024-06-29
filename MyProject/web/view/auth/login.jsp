@@ -40,15 +40,15 @@
                 <div class="item-logo">
                     <img src="${pageContext.request.contextPath}/assets/img/logofpt.jpg" alt="logo">
                 </div>
-                <form action="https://www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/index.html" class="login-form">
+                <form action="authen?action=login" class="login-form">
                     <div class="form-group">
                         <label>Username</label>
-                        <input type="text" placeholder="Enter usrename" class="form-control">
+                        <input type="text" placeholder="Enter usrename" class="form-control" name="username">
                         <i class="far fa-envelope"></i>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="text" placeholder="Enter password" class="form-control">
+                        <input type="text" placeholder="Enter password" class="form-control" name="password">
                         <i class="fas fa-lock"></i>
                     </div>
                     <div class="form-group d-flex align-items-center justify-content-between">
