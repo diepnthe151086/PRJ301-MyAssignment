@@ -32,10 +32,10 @@ public class ViewCourseByStudentController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Student student)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         CourseDBContext db = new CourseDBContext();
-        int sid = student.getId();
+        int sid = Integer.parseInt(request.getParameter("sid"));
         ArrayList<Course> courses = db.getCoursesByStudent(sid);
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("../view/grade/student.jsp").forward(request, response);

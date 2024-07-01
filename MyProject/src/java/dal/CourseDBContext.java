@@ -57,10 +57,9 @@ public class CourseDBContext extends DBContext<Course> {
         ArrayList<Course> courses = new ArrayList<>();
         PreparedStatement stm = null;
         try {
-            String sql = "SELECT c.cid, c.cname \n"
-                    + "FROM students_courses sc INNER JOIN courses c ON c.cid = sc.cid\n"
-                    + "INNER JOIN semester sem ON sem.semid = c.semid\n"
-                    + "WHERE sc.sid = ? AND sem.active = 1";
+            String sql = "SELECT c.cid, c.cname\n"
+                    + "FROM courses c INNER JOIN students_courses sc ON sc.cid = c.cid\n"
+                    + "WHERE sid = ? ";
 
             stm = connection.prepareStatement(sql);
             stm.setInt(1, sid);

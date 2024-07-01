@@ -1,6 +1,6 @@
 <%-- 
     Document   : student
-    Created on : Jul 1, 2024, 1:53:38 AM
+    Created on : Jul 1, 2024, 4:36:01 PM
     Author     : ADMIN
 --%>
 
@@ -13,9 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:if test="${requestScope.exams eq null}">
-            <c:if test="${requestScope.courses.size() > 0}">
-            <form action="student" method="POST">
+        <form action="student" method="POST">
                 <input type="hidden" name="sid" value="${param.sid}"/>
                 course: <select name="cid">
                     <c:forEach items="${requestScope.courses}" var="c">
@@ -26,7 +24,5 @@
                 </select>
                 <input type="submit" value="view"/>
             </form>
-                </c:if>
-        </c:if>
     </body>
 </html>
