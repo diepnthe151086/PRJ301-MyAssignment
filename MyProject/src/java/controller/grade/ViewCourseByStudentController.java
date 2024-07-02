@@ -6,6 +6,8 @@
 package controller.grade;
 
 import dal.CourseDBContext;
+import dal.GradeDBContext;
+import dao.ViewGradeDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import model.Course;
+import model.Exam;
 import model.Student;
 
 /**
@@ -51,7 +54,13 @@ public class ViewCourseByStudentController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        int sid = Integer.parseInt(request.getParameter("sid"));
         
+        GradeDBContext db = new GradeDBContext();
+        ArrayList<ViewGradeDao> viewGradeDaos = db.getGradesByCourse(sid, cid);
+        request.setAttribute("grades", viewGradeDaos);
+        request.getRequestDispatcher("../view/grade/view.jsp").forward(request, response);
     }
 
     /** 
