@@ -16,4 +16,19 @@
         <servlet-name>ViewCourseByStudentController</servlet-name>
         <url-pattern>/grade/student</url-pattern>
     </servlet-mapping>
+     <servlet>
+        <servlet-name>ViewCourseByLecturerController</servlet-name>
+        <servlet-class>controller.exam.ViewCourseByLecturerController</servlet-class>
+    </servlet><servlet>
+        <servlet-name>TakeExamController</servlet-name>
+        <servlet-class>controller.exam.TakeExamController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewCourseByLecturerController</servlet-name>
+        <url-pattern>/exam/lecturer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TakeExamController</servlet-name>
+        <url-pattern>/exam/take</url-pattern>
+    </servlet-mapping>
 </web-app>

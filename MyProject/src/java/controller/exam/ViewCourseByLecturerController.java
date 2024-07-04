@@ -3,22 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.auth;
+package controller.exam;
 
-import dal.UserDBContext;
+import controller.auth.BaseRequiredLecturerAuthenticationController;
+import dal.CourseDBContext;
+import dal.ExamDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import model.Course;
+import model.Exam;
+import model.Lecturer;
 import model.User;
 
 /**
  *
  * @author ADMIN
  */
-public class LoginController extends HttpServlet {
+public class ViewCourseByLecturerController extends BaseRequiredLecturerAuthenticationController {
    
     
 
@@ -31,9 +37,13 @@ public class LoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,User user, Lecturer lecturer)
     throws ServletException, IOException {
-        request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
+        CourseDBContext db = new CourseDBContext();
+        int lid = lecturer.getId();
+        ArrayList<Course> courses = db.getCoursesByLecturer(lid);
+        request.setAttribute("courses", courses);
+        request.getRequestDispatcher("../view/exam/lecturer.jsp").forward(request, response);
     } 
 
     /** 
@@ -44,22 +54,17 @@ public class LoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,User user, Lecturer lecturer)
     throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        int lid = lecturer.getId();
         
-        UserDBContext db = new UserDBContext();
-        User user = db.getUserByUsernamePassword(username, password);
-        if(user  !=null)
-        {
-            request.getSession().setAttribute("user", user);
-            response.getWriter().println("login successful: "+ user.getDisplayname());
-        }
-        else
-        {
-            response.getWriter().println("login failed!");
-        }
+        ExamDBContext db = new ExamDBContext();
+        ArrayList<Exam> exams = db.getExamsByCourse(cid);
+        request.setAttribute("exams", exams);
+        
+        request.getRequestDispatcher("../view/exam/lecturer.jsp").forward(request, response);
+        
         
     }
 

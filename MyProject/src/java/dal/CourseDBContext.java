@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author X1 Nano
+ * @author ADMIN
  */
 public class CourseDBContext extends DBContext<Course> {
 

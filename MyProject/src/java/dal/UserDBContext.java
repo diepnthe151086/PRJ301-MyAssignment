@@ -13,7 +13,7 @@ import model.Lecturer;
 
 /**
  *
- * @author sonnt-local
+ * @author ADMIN
  */
 public class UserDBContext extends DBContext<User> {
 

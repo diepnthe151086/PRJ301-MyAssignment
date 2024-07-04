@@ -5,22 +5,31 @@
 
 package controller.auth;
 
-import dal.UserDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
 /**
  *
  * @author ADMIN
  */
-public class LoginController extends HttpServlet {
+public class LogoutController extends HttpServlet {
    
-    
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        request.getSession().setAttribute("user", null);
+        request.getRequestDispatcher("index.html").forward(request, response);
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -33,7 +42,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
+        processRequest(request, response);
     } 
 
     /** 
@@ -46,21 +55,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        UserDBContext db = new UserDBContext();
-        User user = db.getUserByUsernamePassword(username, password);
-        if(user  !=null)
-        {
-            request.getSession().setAttribute("user", user);
-            response.getWriter().println("login successful: "+ user.getDisplayname());
-        }
-        else
-        {
-            response.getWriter().println("login failed!");
-        }
-        
+        processRequest(request, response);
     }
 
     /** 
