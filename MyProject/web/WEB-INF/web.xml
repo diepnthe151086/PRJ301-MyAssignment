@@ -5,6 +5,10 @@
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.auth.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewCourseByStudentController</servlet-name>
         <servlet-class>controller.grade.ViewCourseByStudentController</servlet-class>
     </servlet>
@@ -30,5 +34,9 @@
     <servlet-mapping>
         <servlet-name>TakeExamController</servlet-name>
         <url-pattern>/exam/take</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 </web-app>
