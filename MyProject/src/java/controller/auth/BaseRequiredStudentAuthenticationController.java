@@ -8,28 +8,33 @@ package controller.auth;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Lecturer;
+import model.Student;
+import model.User;
 
 /**
  *
  * @author ADMIN
  */
-public class LogoutController extends HttpServlet {
+public abstract class BaseRequiredStudentAuthenticationController extends HttpServlet {
    
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
-    } 
+    private boolean isAuthenticated(HttpServletRequest request)
+    {
+        User user = (User)request.getSession().getAttribute("user1");
+        if(user ==null)
+            return false;
+        else
+        {
+            Student student = user.getStudent();
+            return student != null;
+        }
+    }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -42,8 +47,22 @@ public class LogoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        User user = (User)request.getSession().getAttribute("user");
+        if(isAuthenticated(request))
+        {
+            doGet(request, response, user, user.getStudent());
+        }
+        else
+        {
+            response.getWriter().println("access denied!");
+        }
     } 
+    
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response,User user, Student student)
+    throws ServletException, IOException;
+    
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response,User user, Student student)
+    throws ServletException, IOException;
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -55,7 +74,15 @@ public class LogoutController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        User user = (User)request.getSession().getAttribute("user1");
+        if(isAuthenticated(request))
+        {
+            doPost(request, response, user, user.getStudent());
+        }
+        else
+        {
+            response.getWriter().println("access denied!");
+        }
     }
 
     /** 

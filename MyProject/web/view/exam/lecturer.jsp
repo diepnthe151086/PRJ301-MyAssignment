@@ -175,7 +175,7 @@
     <div class="main_content">
         <div class="header">
             <div class="dropdown">
-                <button class="dropbtn">${requestScope.userid}</button>
+                <button class="dropbtn"></button>
                 <div class="dropdown-content">
                     <a href="#">Setting</a>
                     <a href="../logout">Logout</a>

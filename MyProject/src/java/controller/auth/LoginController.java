@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 
 /**
@@ -51,15 +52,25 @@ public class LoginController extends HttpServlet {
         
         UserDBContext db = new UserDBContext();
         User user = db.getUserByUsernamePassword(username, password);
-        if(user  !=null)
+        if(user != null)
         {
-            request.getSession().setAttribute("user", user);
-//            response.getWriter().println("login successful: "+ user.getDisplayname());
-            response.sendRedirect("exam/lecturer");
-        }
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setAttribute("username", username);
+            session.setAttribute("roleId", user.getRole().getRoleid());
+            
+            if (user.getRole().getRoleid() == 1) {
+                response.sendRedirect("exam/lecturer");
+            
+            } else if (user.getRole().getRoleid() == 2) { // Giả sử 2 là ID của vai trò Student
+                response.sendRedirect("grade/student");
+            }
+            
+        } 
         else
         {
-            response.getWriter().println("login failed!");
+            request.setAttribute("error", "Wrong username or password");
+            request.getRequestDispatcher("view/auth/login.jsp").forward(request, response);
         }
         
     }

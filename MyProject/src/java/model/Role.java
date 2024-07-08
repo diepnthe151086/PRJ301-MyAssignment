@@ -20,12 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 
-public class User {
-    private String username;
-    private String password;
-    private String displayname;
-    private Lecturer lecturer;
-    private Student student;
-    private Role role;
-    
+public class Role {
+    private int roleid;
+    private String rolename;
 }
