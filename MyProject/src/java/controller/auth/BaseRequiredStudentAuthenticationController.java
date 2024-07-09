@@ -12,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Lecturer;
 import model.Student;
 import model.User;
 
@@ -24,7 +23,7 @@ public abstract class BaseRequiredStudentAuthenticationController extends HttpSe
    
     private boolean isAuthenticated(HttpServletRequest request)
     {
-        User user = (User)request.getSession().getAttribute("user1");
+        User user = (User)request.getSession().getAttribute("user");
         if(user ==null)
             return false;
         else
@@ -74,7 +73,7 @@ public abstract class BaseRequiredStudentAuthenticationController extends HttpSe
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        User user = (User)request.getSession().getAttribute("user1");
+        User user = (User)request.getSession().getAttribute("user");
         if(isAuthenticated(request))
         {
             doPost(request, response, user, user.getStudent());

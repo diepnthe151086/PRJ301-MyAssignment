@@ -15,7 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import model.Lecturer;
 import model.Student;
 import model.User;
 
@@ -38,7 +37,7 @@ public class RequiredStudentCheckingFilter implements Filter {
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RequiredLecturerCheckingFilter:DoBeforeProcessing");
+            log("RequiredStudentCheckingFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -66,7 +65,7 @@ public class RequiredStudentCheckingFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RequiredLecturerCheckingFilter:DoAfterProcessing");
+            log("RequiredStudentCheckingFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -160,7 +159,7 @@ public class RequiredStudentCheckingFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("RequiredLecturerCheckingFilter:Initializing filter");
+                log("RequiredStudentCheckingFilter:Initializing filter");
             }
         }
     }
@@ -171,9 +170,9 @@ public class RequiredStudentCheckingFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("RequiredLecturerCheckingFilter()");
+            return ("RequiredStudentCheckingFilter()");
         }
-        StringBuffer sb = new StringBuffer("RequiredLecturerCheckingFilter(");
+        StringBuffer sb = new StringBuffer("RequiredStudentCheckingFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
