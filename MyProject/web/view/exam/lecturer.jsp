@@ -1,9 +1,3 @@
-<%-- 
-    Document   : lecturer
-    Created on : July 1, 2024, 1:04:53 AM
-    Author     : ADMIN
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -42,9 +36,14 @@
             text-decoration: none;
             color: #333;
             font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
         }
-        .side_nav ul li a:hover {
+        .side_nav ul li a:hover,
+        .side_nav ul li a.active {
             color: #007bff;
+            background-color: #f1f1f1;
         }
         .main_content {
             margin-left: 270px;
@@ -168,8 +167,9 @@
             <img src="https://hcmuni.fpt.edu.vn/Data/Sites/1/skins/default/img/og-image.png" alt="FPT Logo">
         </div>
         <ul>
-            <li><a href="lecturer">View List of Course</a></li>
-            <li><a href="..\logout">Logout</a></li>
+            <li><a href="lecturer" id="viewCourses">View List of Course</a></li>
+            <li><a href="#" id="viewStudents" onclick="viewStudents()">View List of Student</a></li>
+            <li><a href="../logout">Logout</a></li>
         </ul>
     </div>
     <div class="main_content">
@@ -212,9 +212,18 @@
     </div>
 
     <script>
+        // Highlight the active link
+        const path = window.location.pathname;
+        const viewCoursesLink = document.getElementById('viewCourses');
+        const viewStudentsLink = document.getElementById('viewStudents');
+
+        if (path.includes('lecturer')) {
+            viewCoursesLink.classList.add('active');
+        } else if (path.includes('liststudent')) {
+            viewStudentsLink.classList.add('active');
+        }
+
         function viewCourse(courseId) {
-            // Logic to handle course selection
-            // For example, submitting a form with the selected course ID
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = 'lecturer';
@@ -223,6 +232,21 @@
             input.type = 'hidden';
             input.name = 'cid';
             input.value = courseId;
+            form.appendChild(input);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function viewStudents() {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'liststudent';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'courseId';
+            input.value = '${param.cid}';
             form.appendChild(input);
             
             document.body.appendChild(form);
