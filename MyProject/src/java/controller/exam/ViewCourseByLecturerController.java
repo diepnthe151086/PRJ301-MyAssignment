@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import model.Course;
 import model.Exam;
@@ -39,8 +40,10 @@ public class ViewCourseByLecturerController extends BaseRequiredLecturerAuthenti
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response,User user, Lecturer lecturer)
     throws ServletException, IOException {
+        HttpSession req = request.getSession();
+        
         CourseDBContext db = new CourseDBContext();
-        int lid = lecturer.getId();
+        int lid = Integer.parseInt(req.getAttribute("userLecturerId").toString());
         ArrayList<Course> courses = db.getCoursesByLecturer(lid);
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("../view/exam/lecturer.jsp").forward(request, response);

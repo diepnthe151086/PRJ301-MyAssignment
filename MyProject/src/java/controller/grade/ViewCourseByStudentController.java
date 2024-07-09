@@ -37,8 +37,9 @@ public class ViewCourseByStudentController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
         CourseDBContext db = new CourseDBContext();
-        int sid = Integer.parseInt(request.getParameter("sid"));
+        int sid = Integer.parseInt(request.getSession().getAttribute("userStudentId").toString());
         ArrayList<Course> courses = db.getCoursesByStudent(sid);
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("../view/grade/student.jsp").forward(request, response);
@@ -55,7 +56,7 @@ public class ViewCourseByStudentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         int cid = Integer.parseInt(request.getParameter("cid"));
-        int sid = Integer.parseInt(request.getParameter("sid"));
+        int sid = Integer.parseInt(request.getSession().getAttribute("userStudentId").toString());
         
         GradeDBContext db = new GradeDBContext();
         ArrayList<ViewGradeDao> viewGradeDaos = db.getGradesByCourse(sid, cid);

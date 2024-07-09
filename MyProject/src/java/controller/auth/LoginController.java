@@ -57,13 +57,21 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setAttribute("username", username);
-            session.setAttribute("roleId", user.getRole().getRoleid());
+            session.setAttribute("roleId", user.getRole().getRoleid());   
+                      
+            
+
+
             
             if (user.getRole().getRoleid() == 1) {
+                session.setAttribute("userLecturerId", user.getLecturer().getId());
                 response.sendRedirect("exam/lecturer");
+                
             
             } else if (user.getRole().getRoleid() == 2) { // Giả sử 2 là ID của vai trò Student
+                session.setAttribute("userStudentId", user.getStudent().getId()); 
                 response.sendRedirect("grade/student");
+                
             }
             
         } 

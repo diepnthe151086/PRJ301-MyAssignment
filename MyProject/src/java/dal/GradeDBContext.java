@@ -29,12 +29,12 @@ public class GradeDBContext extends DBContext<Grade> {
         try {
             String sql = "SELECT assesments.*, grades.* FROM grades \n"
                     + "JOIN exams on grades.eid = exams.eid\n"
-                    + "JOIN assesments on exams.aid = assesments.aid\n"
-                    + "JOIN subjects on assesments.subid = subjects.subid\n"
-                    + "JOIN courses on subjects.subid = courses.subid\n"
-                    + "JOIN students on grades.sid = students.sid\n"
-                    + "WHERE students.sid = ? \n"
-                    + "AND  courses.cid = ? ";
+                    + "RIGHT JOIN assesments on exams.aid = assesments.aid\n"
+                    + "LEFT JOIN subjects on assesments.subid = subjects.subid\n"
+                    + "LEFT JOIN courses on subjects.subid = courses.subid\n"
+                    + "LEFT JOIN students on grades.sid = students.sid\n"
+                    + "WHERE (students.sid = ? or students.sid is null)\n"
+                    + "AND  courses.cid = ?";
 
             stm = connection.prepareStatement(sql);
             stm.setInt(1, sid);
@@ -60,7 +60,7 @@ public class GradeDBContext extends DBContext<Grade> {
         }
         return viewGrades;
     }
-    
+
     public ArrayList<Grade> getGradesFromExamIds(ArrayList<Integer> eids) {
         ArrayList<Grade> grades = new ArrayList<>();
         PreparedStatement stm = null;
@@ -115,20 +115,20 @@ public class GradeDBContext extends DBContext<Grade> {
                 + "           (?\n"
                 + "           ,?\n"
                 + "           ,?)";
-        
-        PreparedStatement stm_remove =null;
+
+        PreparedStatement stm_remove = null;
         ArrayList<PreparedStatement> stm_inserts = new ArrayList<>();
-        
+
         try {
             connection.setAutoCommit(false);
             stm_remove = connection.prepareStatement(sql_remove);
             stm_remove.setInt(1, cid);
             stm_remove.executeUpdate();
-            
+
             for (Grade grade : grades) {
                 PreparedStatement stm_insert = connection.prepareStatement(sql_insert);
                 stm_insert.setInt(1, grade.getExam().getId());
-                stm_insert.setInt(2,grade.getStudent().getId());
+                stm_insert.setInt(2, grade.getStudent().getId());
                 stm_insert.setFloat(3, grade.getScore());
                 stm_insert.executeUpdate();
                 stm_inserts.add(stm_insert);
@@ -141,9 +141,7 @@ public class GradeDBContext extends DBContext<Grade> {
             } catch (SQLException ex1) {
                 Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex1);
             }
-        }
-        finally
-        {
+        } finally {
             try {
                 connection.setAutoCommit(true);
                 stm_remove.close();
@@ -155,7 +153,7 @@ public class GradeDBContext extends DBContext<Grade> {
                 Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
     @Override
