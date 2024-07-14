@@ -168,7 +168,7 @@
         </div>
         <ul>
             <li><a href="lecturer" id="viewCourses">View List of Course</a></li>
-            <li><a href="#" id="viewStudents" onclick="viewStudents()">View List of Student</a></li>
+            <li><a href="liststudent" id="viewStudents">View List of Student</a></li>
             <li><a href="../logout">Logout</a></li>
         </ul>
     </div>
@@ -238,20 +238,6 @@
             form.submit();
         }
 
-        function viewStudents() {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'liststudent';
-            
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'courseId';
-            input.value = '${param.cid}';
-            form.appendChild(input);
-            
-            document.body.appendChild(form);
-            form.submit();
-        }
     </script>
 </body>
 </html>

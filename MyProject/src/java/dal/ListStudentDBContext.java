@@ -4,6 +4,7 @@
  */
 package dal;
 
+import dao.ViewGradeDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,41 +23,36 @@ import model.Subject;
  */
 public class ListStudentDBContext extends DBContext<Lecturer> {
 
-    public ArrayList<Student> getListStudent(int cid) {
+    public ArrayList<Student> getListStudent(int lid, int cid) {
         ArrayList<Student> students = new ArrayList<>();
         PreparedStatement stm = null;
         try {
             String sql = "SELECT s.sid, s.sname\n"
                     + "FROM students s INNER JOIN students_courses sc ON s.sid = sc.sid\n"
-                    + "INNER JOIN courses c ON c.cid = sc.cid\n"
-                    + "WHERE c.cid = ?";
+                    + "INNER JOIN courses c ON  sc.cid = c.cid\n"
+                    + "INNER JOIN lecturers l ON c.lid = l.lid\n"
+                    + "WHERE l.lid = ? AND c.cid = ?";
 
             stm = connection.prepareStatement(sql);
-            stm.setInt(1, cid);
+            stm.setInt(1, lid);
+            stm.setInt(2, cid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-//                Exam e = new Exam();
-//                e.setId(rs.getInt("eid"));
-//                e.setDuration(rs.getInt("duration"));
-//                e.setFrom(rs.getTimestamp("from"));
-//                e.setAssessment(a);
-
-               Student s = new Student();
-               s.setId(rs.getInt("sid"));
-               s.setName(rs.getString("sname"));
-
+                Student s = new Student();
+                s.setId(rs.getInt("sid"));
+                s.setName(rs.getString("sname"));
                 
                 students.add(s);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ExamDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListStudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 stm.close();
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ExamDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ListStudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return students;

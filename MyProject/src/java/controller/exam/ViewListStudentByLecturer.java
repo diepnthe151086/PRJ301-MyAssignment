@@ -41,19 +41,19 @@ public class ViewListStudentByLecturer extends BaseRequiredLecturerAuthenticatio
         int lid = Integer.parseInt(req.getAttribute("userLecturerId").toString());
         ArrayList<Course> courses = db.getCoursesByLecturer(lid);
         request.setAttribute("courses", courses);
-        request.getRequestDispatcher("../view/exam/lecturer.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/exam/liststudent.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, User user, Lecturer lecturer) throws ServletException, IOException {
-        int cid = Integer.parseInt(request.getParameter("cid"));
+        int cid = Integer.parseInt(request.getParameter("courseId"));
         int lid = lecturer.getId();
 
         ListStudentDBContext db = new ListStudentDBContext();
-        ArrayList<Student> students = db.getListStudent(cid);
+        ArrayList<Student> students = db.getListStudent(lid, cid);
         request.setAttribute("students", students);
 
-        request.getRequestDispatcher("../view/exam/liststudent.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/exam/viewstudent.jsp").forward(request, response);
     }
 
 }
