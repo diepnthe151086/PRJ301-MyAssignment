@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import model.Lecturer;
 import model.Role;
 import model.Student;
+import model.Training;
 
 /**
  *
@@ -21,7 +22,7 @@ public class UserDBContext extends DBContext<User> {
 
     public void setUserLecturer(User user) {
         PreparedStatement stm = null;
-        
+
         try {
             String sql = "SELECT u.username, u.displayname, l.lid, l.lname\n"
                     + "FROM users u LEFT JOIN users_lecturers ul ON ul.username = u.username AND ul.active = 1\n"
@@ -56,6 +57,41 @@ public class UserDBContext extends DBContext<User> {
         }
     }
 
+    public void setTrainingDepartment(User user) {
+        PreparedStatement stm = null;
+
+        try {
+            String sql = "SELECT td.username, u.displayname, td.tid\n"
+                    + "FROM users u LEFT JOIN training_department td ON u.username = td.username\n"
+                    + "WHERE u.username = ? AND u.[password] = ?";
+            stm = connection.prepareStatement(sql);
+            stm.setString(1, user.getUsername());
+            stm.setString(2, user.getPassword());
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int tid = rs.getInt("tid");
+                if (tid != 0) {
+                    Training training = new Training();
+                    training.setTid(tid);
+                    user.setTraining(training);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public User getUserByUsernamePassword(String username, String password) {
         PreparedStatement stm = null;
         User user = null;
@@ -69,7 +105,7 @@ public class UserDBContext extends DBContext<User> {
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 user = new User();
-                user.setUsername(username);                
+                user.setUsername(username);
                 user.setPassword(password);
                 Role role = new Role();
                 role.setRoleid(rs.getInt("roleid"));
@@ -80,6 +116,8 @@ public class UserDBContext extends DBContext<User> {
                     setUserLecturer(user);
                 } else if (role.getRoleid() == 2) { // Giả sử 2 là ID của vai trò Student
                     setUserStudent(user);
+                } else if (role.getRoleid() == 3) { // Giả sử 2 là ID của vai trò Student
+                    setTrainingDepartment(user);
                 }
             }
         } catch (SQLException ex) {

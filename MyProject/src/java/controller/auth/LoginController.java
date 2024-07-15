@@ -65,6 +65,10 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("userStudentId", user.getStudent().getId());
                 response.sendRedirect("grade/student");
 
+            } else if (user.getRole().getRoleid() == 3) { // Giả sử 3 là ID của vai trò Training
+                session.setAttribute("userTrainingId", user.getTraining().getTid());
+                response.sendRedirect("home");
+
             }
 
         } else {

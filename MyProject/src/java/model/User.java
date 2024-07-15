@@ -26,6 +26,7 @@ public class User {
     private String displayname;
     private Lecturer lecturer;
     private Student student;
+    private Training training;
     private Role role;
     
 }

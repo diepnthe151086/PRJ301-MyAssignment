@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package dao;
 
 /**
  *
- * @author X1 Nano
+ * @author ADMIN
  */
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +23,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Semester {
-    private int id;
-    private int year;
-    private String season;
-    private boolean active;
-    
+public class ViewCourseDao {
+    private int cid;
+    private String cname;
+    private int lid;
+    private String lname;
+    private int sid;
+    private String sname;
+    private int semid;
     
 }

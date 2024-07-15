@@ -4,11 +4,17 @@
  */
 package dal;
 
+import dao.ViewCourseDao;
 import java.util.ArrayList;
 import model.Course;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Lecturer;
+import model.Semester;
+import model.Student;
+import model.Subject;
 
 /**
  *
@@ -84,9 +90,76 @@ public class CourseDBContext extends DBContext<Course> {
 
     }
 
+    public List<ViewCourseDao> getCoursesByTraining() {
+        List<ViewCourseDao> listFound = new ArrayList<>();
+        PreparedStatement stm = null;
+        try {
+            String sql = "SELECT c.cid, c.cname, l.lid, l.lname, s.sid, s.sname, c.semid\n"
+                    + "FROM courses c\n"
+                    + "JOIN lecturers l ON c.lid = l.lid\n"
+                    + "JOIN students_courses sc ON c.cid = sc.cid\n"
+                    + "JOIN students s ON sc.sid = s.sid\n"
+                    + "ORDER BY c.cid;";
+
+            stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                ViewCourseDao c = new ViewCourseDao();
+                c.setCid(rs.getInt("cid"));
+                c.setCname(rs.getString("cname"));
+                c.setLid(rs.getInt("lid"));
+                c.setLname(rs.getString("lname"));
+                c.setSid(rs.getInt("sid"));
+                c.setSname(rs.getString("sname"));
+                c.setSemid(rs.getInt("semid"));
+
+                listFound.add(c);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listFound;
+    }
+
     @Override
-    public void insert(Course model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void insert(Course course) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "INSERT INTO [dbo].[courses]\n"
+                    + "           ([cid]\n"
+                    + "           ,[cname]\n"
+                    + "           ,[lid]\n"
+                    + "           ,[subid]\n"
+                    + "           ,[semid])\n"
+                    + "     VALUES\n"
+                    + "           (?, ?, ?, ?, ?)";
+
+            stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stm.setObject(1, course.getId());
+            stm.setObject(2, course.getName());
+            stm.setObject(3, course.getLecturer());
+            stm.setObject(4, course.getSubject());
+            stm.setObject(5, course.getSemester());
+            stm.executeUpdate();
+            ResultSet rs = stm.getGeneratedKeys();
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -106,6 +179,10 @@ public class CourseDBContext extends DBContext<Course> {
 
     @Override
     public ArrayList<Course> list() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Course> findAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
