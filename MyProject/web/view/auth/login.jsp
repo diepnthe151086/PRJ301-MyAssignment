@@ -94,6 +94,7 @@
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="submit" name="login" class="login-submit" value="Login">
+            <div><span style="color: red">${error}</span></div>
         </form>
     </div>
 </body>

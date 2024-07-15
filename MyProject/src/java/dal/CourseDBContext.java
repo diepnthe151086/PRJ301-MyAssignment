@@ -143,11 +143,13 @@ public class CourseDBContext extends DBContext<Course> {
                     + "           (?, ?, ?, ?, ?)";
 
             stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
             stm.setObject(1, course.getId());
             stm.setObject(2, course.getName());
-            stm.setObject(3, course.getLecturer());
-            stm.setObject(4, course.getSubject());
-            stm.setObject(5, course.getSemester());
+            stm.setObject(3, course.getLecturer().getId());
+            stm.setObject(4, course.getSubject().getId());
+            stm.setObject(5, course.getSemester().getId());
+
             stm.executeUpdate();
             ResultSet rs = stm.getGeneratedKeys();
         } catch (SQLException ex) {
@@ -183,7 +185,72 @@ public class CourseDBContext extends DBContext<Course> {
     }
 
     public List<Course> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Course> listFound = new ArrayList<>();
+        PreparedStatement stm = null;
+        try {
+            String sql = "SELECT [cid]\n"
+                    + "      ,[cname]\n"
+                    + "      ,[lid]\n"
+                    + "      ,[subid]\n"
+                    + "      ,[semid]\n"
+                    + "  FROM [courses]";
+
+            stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Course c = new Course();
+                c.setId(rs.getInt("cid"));
+                c.setName(rs.getString("cname"));
+
+                Lecturer l = new Lecturer();
+                l.setId(rs.getInt("lid"));
+                c.setLecturer(l);
+
+                Subject su = new Subject();
+                su.setId(rs.getInt("subid"));
+                c.setSubject(su);
+
+                Semester se = new Semester();
+                se.setId(rs.getInt("semid"));
+                c.setSemester(se);
+
+                listFound.add(c);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listFound;
+    }
+
+    public void deleteById(Course courses) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "DELETE FROM [dbo].[courses]\n"
+                    + "      WHERE cid = ?";
+
+            stm = connection.prepareStatement(sql);
+
+            stm.setObject(1, courses.getId());
+
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
 }

@@ -39,51 +39,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <button onclick="addCourse()">Add</button>
-        <button onclick="deleteCourse()">Delete</button>
-        <form action="viewcourse?action=insert" id="formAddEdit" method="POST" style="display: none">
-            <h1>Form Add</h1>
-            Course ID <input type="text" name="cid" value="" /> <br/>
-            Course name  <input type="text" name="cname" value="" /> <br/>
-            Lecturer ID <input type="text" name="lid" value="" /> <br/>
-            Subject ID <input type="text" name="subid" value="" /> <br/>
-            Semester <input type="text" name="semid" value="" /> <br/>
-            <input type="submit" value="Insert" />
-        </form>
-        <form action="viewcourse?action=delete" id="formDeleteEdit" method="POST" style="display: none">
-            <h1>Form Delete</h1>
-            Course ID <input type="text" name="cid" value="" /> <br/>
-            Course name  <input type="text" name="cname" value="" /> <br/>
-            Lecturer ID <input type="text" name="lid" value="" /> <br/>
-            Subject ID <input type="text" name="subid" value="" /> <br/>
-            Semester <input type="text" name="semid" value="" /> <br/>
-            <input type="submit" value="Delete" />
-        </form>
         
-        <script>
-            function addCourse() {
-                displayFormAdd();
-            }
-            function deleteCourse() {
-                displayFormDelete();
-            }
-            function displayFormAdd() {
-                let form = document.querySelector("#formAddEdit");
-                if (form.style.display === 'none') {
-                    form.style.display = 'block';
-                } else {
-                    form.style.display = 'none';
-                }
-            }
-            function displayFormDelete() {
-                let form = document.querySelector("#formDeleteEdit");
-                if (form.style.display === 'none') {
-                    form.style.display = 'block';
-                } else {
-                    form.style.display = 'none';
-                }
-            }
-        </script>
 
     </body>
 </html>
