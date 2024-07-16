@@ -157,7 +157,7 @@ public class CourseDBContext extends DBContext<Course> {
         } finally {
             try {
                 stm.close();
-                connection.close();
+                
             } catch (SQLException ex) {
                 Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -246,7 +246,6 @@ public class CourseDBContext extends DBContext<Course> {
         } finally {
             try {
                 stm.close();
-                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }

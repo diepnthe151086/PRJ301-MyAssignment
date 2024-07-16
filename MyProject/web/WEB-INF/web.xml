@@ -32,6 +32,10 @@
         <servlet-name>AddCourseController</servlet-name>
         <servlet-class>controller.training.AddCourseController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddStudentController</servlet-name>
+        <servlet-class>controller.training.AddStudentController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -79,5 +83,9 @@
     <servlet-mapping>
         <servlet-name>AddCourseController</servlet-name>
         <url-pattern>/addcourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddStudentController</servlet-name>
+        <url-pattern>/addstudent</url-pattern>
     </servlet-mapping>
 </web-app>

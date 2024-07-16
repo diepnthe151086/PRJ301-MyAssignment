@@ -58,7 +58,6 @@ public class AddCourseController extends HttpServlet {
         String action = request.getParameter("action") == null
                 ? "" : request.getParameter("action");
         List<Course> listCourse;
-        listCourse = insert(request, response);
         
         switch (action) {
 //            case "search":

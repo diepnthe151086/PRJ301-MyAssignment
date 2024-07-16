@@ -8,10 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Assessment;
+import model.Course;
 import model.Exam;
+import model.Lecturer;
+import model.Semester;
 import model.Student;
 import model.Subject;
 
@@ -75,6 +79,38 @@ public class StudentDBContext extends DBContext<Student> {
     @Override
     public ArrayList<Student> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Student> findStudentByCourseID(int cid) {
+        List<Student> listFound = new ArrayList<>();
+        PreparedStatement stm = null;
+        try {
+            String sql = "SELECT s.sid, s.sname\n"
+                    + "FROM students s INNER JOIN students_courses sc ON s.sid = sc.sid\n"
+                    + "INNER JOIN courses c ON sc.cid = c.cid\n"
+                    + "WHERE c.cid = ?";
+
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, cid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Student s = new Student();
+                s.setId(rs.getInt("sid"));
+                s.setName(rs.getString("sname"));
+                listFound.add(s);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listFound;
     }
 
 }

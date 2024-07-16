@@ -1,6 +1,6 @@
 <%-- 
-    Document   : addcourse
-    Created on : Jul 16, 2024, 12:13:31 AM
+    Document   : addstudent
+    Created on : Jul 16, 2024, 9:20:59 PM
     Author     : ADMIN
 --%>
 
@@ -16,49 +16,38 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>Course id</th>
-                    <th>Course name</th>
-                    <th>Lecturer id</th>
-                    <th>Subject id</th>
-                    <th>Semester</th>
-                     <th></th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${requestScope.courses}" var="c">
+                <c:forEach items="${requestScope.students}" var="s">
                     <tr>
-                        <td>${c.id}</td>
-                        <td>${c.name}</td>
-                        <td>${c.lecturer.id}</td>
-                        <td>${c.subject.id}</td>
-                        <td>${c.semester.id}</td>
-                        <td><a href="addstudent?cid=${c.id}">add student</a></td>
+                        <td>${s.id}</td>
+                        <td>${s.name}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <button onclick="addCourse()">Add</button>
-        <button onclick="deleteCourse()">Delete</button>
-        <form action="addcourse?action=insert" id="formAddEdit" method="POST" style="display: none">
+        <button onclick="addStudent()">Add</button>
+        <button onclick="deleteStudent()">Delete</button>
+        <form action="addstudent?action=insert" id="formAddEdit" method="POST" style="display: none">
             <h1>Form Add</h1>
             Course ID <input type="text" name="cid" value="" /> <br/>
-            Course name  <input type="text" name="cname" value="" /> <br/>
-            Lecturer ID <input type="text" name="lid" value="" /> <br/>
-            Subject ID <input type="text" name="subid" value="" /> <br/>
-            Semester <input type="text" name="semid" value="" /> <br/>
+            Course name  <input type="text" name="cname" value="" /> <br/>          
             <input type="submit" value="Insert" />
         </form>
-        <form action="addcourse?action=delete" id="formDeleteEdit" method="POST" style="display: none">
+        <form action="addstudent?action=delete" id="formDeleteEdit" method="POST" style="display: none">
             <h1>Form Delete</h1>
-            Course ID <input type="text" name="cid" value="" /> <br/>
+            Course ID <input type="text" name="sid" value="" /> <br/>
             <input type="submit" value="Delete" />
         </form>
         
         <script>
-            function addCourse() {
+            function addStudent() {
                 displayFormAdd();
             }
-            function deleteCourse() {
+            function deleteStudent() {
                 displayFormDelete();
             }
             function displayFormAdd() {
