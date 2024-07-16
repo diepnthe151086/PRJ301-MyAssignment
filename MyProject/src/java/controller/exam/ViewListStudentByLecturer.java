@@ -39,6 +39,8 @@ public class ViewListStudentByLecturer extends BaseRequiredLecturerAuthenticatio
 
         CourseDBContext db = new CourseDBContext();
         int lid = Integer.parseInt(req.getAttribute("userLecturerId").toString());
+        String displayname = req.getAttribute("displayname").toString();
+        request.setAttribute("displayname", displayname);
         ArrayList<Course> courses = db.getCoursesByLecturer(lid);
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("../view/exam/liststudent.jsp").forward(request, response);

@@ -33,13 +33,13 @@
         <button onclick="deleteStudent()">Delete</button>
         <form action="addstudent?action=insert" id="formAddEdit" method="POST" style="display: none">
             <h1>Form Add</h1>
-            Course ID <input type="text" name="cid" value="" /> <br/>
-            Course name  <input type="text" name="cname" value="" /> <br/>          
+            Student ID <input type="text" name="sid" value="" /> <br/>
+            Student name  <input type="text" name="sname" value="" /> <br/>          
             <input type="submit" value="Insert" />
         </form>
         <form action="addstudent?action=delete" id="formDeleteEdit" method="POST" style="display: none">
             <h1>Form Delete</h1>
-            Course ID <input type="text" name="sid" value="" /> <br/>
+            Student ID <input type="text" name="sid" value="" /> <br/>
             <input type="submit" value="Delete" />
         </form>
         

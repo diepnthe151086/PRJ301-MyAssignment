@@ -10,15 +10,17 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
             background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
         }
         .side_nav {
             width: 250px;
-            background-color: #ffffff;
+            background-color: #333;
             padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             height: 100vh;
+            color: white;
             position: fixed;
         }
         .side_nav .logo img {
@@ -34,7 +36,7 @@
         }
         .side_nav ul li a {
             text-decoration: none;
-            color: #333;
+            color: white;
             font-size: 18px;
             display: block;
             padding: 10px;
@@ -42,13 +44,14 @@
         }
         .side_nav ul li a:hover,
         .side_nav ul li a.active {
-            color: #007bff;
-            background-color: #f1f1f1;
+            background-color: #555;
         }
         .main_content {
             margin-left: 270px;
             padding: 20px;
             flex-grow: 1;
+            background-color: #f4f4f4;
+            min-height: 100vh;
         }
         .header {
             display: flex;
@@ -64,7 +67,8 @@
             padding: 10px 20px;
             font-size: 16px;
             border: none;
-            background-color: #ffffff;
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
         }
         .header .dropdown-content {
@@ -88,16 +92,12 @@
             display: block;
         }
         .header .dropdown:hover .dropbtn {
-            background-color: #ffffff;
+            background-color: #0056b3;
         }
         h1.title {
             text-align: center;
             color: #333;
             margin-bottom: 20px;
-        }
-        .table {
-            display: flex;
-            justify-content: center;
         }
         .course-list {
             display: flex;
@@ -126,88 +126,81 @@
             background-color: #f1f1f1;
             border-color: #007bff;
         }
-        form {
+        .exam-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        form select, form input[type="submit"] {
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        form input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        form input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        form input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .exam-list {
+        .exam-list label {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .exam-list input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .exam-list input[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="side_nav">
-        <div class="logo">
-            <img src="https://hcmuni.fpt.edu.vn/Data/Sites/1/skins/default/img/og-image.png" alt="FPT Logo">
+    <div class="container">
+        <div class="side_nav">
+            <div class="logo">
+                <img src="https://hcmuni.fpt.edu.vn/Data/Sites/1/skins/default/img/og-image.png" alt="FPT Logo">
+            </div>
+            <ul>
+                <li><a href="lecturer" id="viewCourses">View List of Course</a></li>
+                <li><a href="liststudent" id="viewStudents">View List of Student</a></li>
+                <li><a href="../logout">Logout</a></li>
+            </ul>
         </div>
-        <ul>
-            <li><a href="lecturer" id="viewCourses">View List of Course</a></li>
-            <li><a href="liststudent" id="viewStudents">View List of Student</a></li>
-            <li><a href="../logout">Logout</a></li>
-        </ul>
-    </div>
-    <div class="main_content">
-        <div class="header">
-            <div class="dropdown">
-                <button class="dropbtn"></button>
-                <div class="dropdown-content">
-                    <a href="#">Setting</a>
-                    <a href="../logout">Logout</a>
+        <div class="main_content">
+            <div class="header">
+                <div class="dropdown">
+                    <button class="dropbtn">${requestScope.displayname}</button>
+                    <div class="dropdown-content">
+                        <a href="#">Setting</a>
+                        <a href="../logout">Logout</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <h1 class="title">Class List</h1>
-        <div class="table">
-            <c:if test="${requestScope.exams eq null}">
-                <c:if test="${requestScope.courses.size() > 0}">
-                    <div class="course-list">
+            <h1 class="title">Class List</h1>
+            <div class="course-list">
+                <c:if test="${requestScope.exams eq null}">
+                    <c:if test="${requestScope.courses.size() > 0}">
                         <label>Courses:</label>
                         <c:forEach items="${requestScope.courses}" var="c">
                             <div class="course-item" onclick="viewCourse('${c.id}')">
                                 ${c.name}
                             </div>
                         </c:forEach>
-                    </div>
+                    </c:if>
                 </c:if>
-            </c:if>
-            <c:if test="${requestScope.exams ne null}">
-                <form action="take" method="GET" class="exam-list">
-                    <input type="hidden" name="cid" value="${param.cid}"/>
-                    <c:forEach items="${requestScope.exams}" var="e">
-                        <label>
-                            <input type="checkbox" name="eid" value="${e.id}"/> 
-                            ${e.assessment.name} - (${e.from} : ${e.assessment.weight}%)
-                        </label>
-                    </c:forEach>
-                    <input type="submit" value="Take"/>
-                </form>
-            </c:if>
+                <c:if test="${requestScope.exams ne null}">
+                    <form action="take" method="GET" class="exam-list">
+                        <input type="hidden" name="cid" value="${param.cid}"/>
+                        <c:forEach items="${requestScope.exams}" var="e">
+                            <label>
+                                <input type="checkbox" name="eid" value="${e.id}"/> 
+                                ${e.assessment.name} - (${e.from} : ${e.assessment.weight}%)
+                            </label>
+                        </c:forEach>
+                        <input type="submit" value="Take"/>
+                    </form>
+                </c:if>
+            </div>
         </div>
     </div>
 
@@ -237,7 +230,6 @@
             document.body.appendChild(form);
             form.submit();
         }
-
     </script>
 </body>
 </html>

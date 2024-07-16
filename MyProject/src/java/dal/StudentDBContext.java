@@ -7,6 +7,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,9 +57,36 @@ public class StudentDBContext extends DBContext<Student> {
         return students;
     }
 
-    @Override
-    public void insert(Student model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void insertStudent(Student student) {
+        PreparedStatement stm = null;
+        try {
+            String sql = "INSERT INTO [students]\n"
+                    + "           ([sid]\n"
+                    + "           ,[sname])\n"
+                    + "     SELECT\n"
+                    + "           (?, ?)\n"
+                    + "	FROM students JOIN students_courses ON students.sid = students_courses.sid\n"
+                    + "	INNER JOIN courses ON students_courses.cid = courses.cid\n"
+                    + "\n"
+                    + "	WHERE courses.cid = ?";
+
+            stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            stm.setObject(1, student.getId());
+            stm.setObject(2, student.getName());
+
+            stm.executeUpdate();
+            ResultSet rs = stm.getGeneratedKeys();
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -111,6 +139,11 @@ public class StudentDBContext extends DBContext<Student> {
             }
         }
         return listFound;
+    }
+
+    @Override
+    public void insert(Student model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

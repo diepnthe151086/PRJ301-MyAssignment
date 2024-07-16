@@ -20,11 +20,12 @@
             }
             .side_nav {
                 width: 250px;
-                background-color: #ffffff;
+                background-color: #333;
                 padding: 20px;
                 box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
                 height: 100vh;
                 position: fixed;
+                color: white;
             }
             .side_nav .logo img {
                 width: 100%;
@@ -39,7 +40,7 @@
             }
             .side_nav ul li a {
                 text-decoration: none;
-                color: #333;
+                color: white;
                 font-size: 18px;
                 display: block;
                 padding: 10px;
@@ -48,7 +49,7 @@
             .side_nav ul li a:hover,
             .side_nav ul li a.active {
                 color: #007bff;
-                background-color: #f1f1f1;
+                background-color: #555;
             }
             .main_content {
                 margin-left: 270px;
@@ -69,8 +70,10 @@
                 padding: 10px 20px;
                 font-size: 16px;
                 border: none;
-                background-color: #ffffff;
+                background-color: #007bff;
+                color: white;
                 cursor: pointer;
+                border-radius: 4px;
             }
             .header .dropdown-content {
                 display: none;
@@ -93,7 +96,7 @@
                 display: block;
             }
             .header .dropdown:hover .dropbtn {
-                background-color: #ffffff;
+                background-color: #0056b3;
             }
             h1.title {
                 text-align: center;
@@ -180,7 +183,7 @@
         <div class="main_content">
             <div class="header">
                 <div class="dropdown">
-                    <button class="dropbtn"></button>
+                    <button class="dropbtn">${requestScope.displayname}</button>
                     <div class="dropdown-content">
                         <a href="#">Setting</a>
                         <a href="../logout">Logout</a>
@@ -209,16 +212,6 @@
         </form>
 
         <script>
-            // Highlight the active link
-            const path = window.location.pathname;
-            const viewCoursesLink = document.getElementById('viewCourses');
-            const viewStudentsLink = document.getElementById('viewStudents');
-
-            if (path.includes('lecturer')) {
-                viewCoursesLink.classList.add('active');
-            } else if (path.includes('liststudent')) {
-                viewStudentsLink.classList.add('active');
-            }
             function viewCourse(cid) {
                 document.getElementById("courseId").value = cid;
                 document.getElementById("viewCourseForm").submit();
@@ -236,7 +229,6 @@
                     viewStudentsLink.classList.add('active');
                 }
             });
-
         </script>
     </body>
 </html>
