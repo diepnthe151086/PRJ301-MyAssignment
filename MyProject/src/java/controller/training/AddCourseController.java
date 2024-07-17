@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.training;
 
+import controller.auth.BaseRequiredTrainingAuthenticationController;
 import dal.CourseDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,46 +19,30 @@ import model.Course;
 import model.Lecturer;
 import model.Semester;
 import model.Subject;
+import model.Training;
+import model.User;
 
 /**
  *
  * @author ADMIN
  */
-public class AddCourseController extends HttpServlet {
+public class AddCourseController extends BaseRequiredTrainingAuthenticationController {
 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, User user, Training training) throws ServletException, IOException {
         CourseDBContext db = new CourseDBContext();
         HttpSession session = request.getSession();
         List<Course> courses = db.findAll();
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("view/training/addcourse.jsp").forward(request, response);
-    } 
+    }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, User user, Training training) throws ServletException, IOException {
         String action = request.getParameter("action") == null
                 ? "" : request.getParameter("action");
         List<Course> listCourse;
-        
+
         switch (action) {
 //            case "search":
 //                listProduct = searchProduct(request, response);
@@ -74,13 +58,8 @@ public class AddCourseController extends HttpServlet {
         }
         request.setAttribute("listCourse", listCourse);
         response.sendRedirect("addcourse");
-        
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
@@ -88,21 +67,20 @@ public class AddCourseController extends HttpServlet {
 
     private List<Course> insert(HttpServletRequest request, HttpServletResponse response) {
         CourseDBContext db = new CourseDBContext();
-        
+
         int cid = Integer.parseInt(request.getParameter("cid"));
         String cname = request.getParameter("cname");
         int lid = Integer.parseInt(request.getParameter("lid"));
         int subid = Integer.parseInt(request.getParameter("subid"));
         int semid = Integer.parseInt(request.getParameter("semid"));
-        
+
         Lecturer l = new Lecturer();
         l.setId(lid);
         Subject su = new Subject();
         su.setId(subid);
         Semester se = new Semester();
         se.setId(semid);
-        
-        
+
         Course course = new Course();
         course.setId(cid);
         course.setName(cname);
@@ -110,18 +88,17 @@ public class AddCourseController extends HttpServlet {
         course.setSubject(su);
         course.setSemester(se);
         db.insert(course);
-        
+
         return db.findAll();
     }
 
     private List<Course> delete(HttpServletRequest request, HttpServletResponse response) {
         CourseDBContext db = new CourseDBContext();
         int id = Integer.parseInt(request.getParameter("cid"));
-        
+
         Course courses = new Course();
         courses.setId(id);
         db.deleteById(courses);
         return db.findAll();
     }
-
 }

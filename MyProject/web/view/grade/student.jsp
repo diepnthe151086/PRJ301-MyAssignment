@@ -162,9 +162,9 @@
             </div>
             <div class="main_content">
                 <div class="header">
-                    <div>Welcome, ${requestScope.displayname}</div>
+                    <div>Welcome, </div>
                     <div class="dropdown">
-                        <button class="dropbtn">Profile</button>
+                        <button class="dropbtn">${requestScope.displayname}</button>
                         <div class="dropdown-content">
                             <a href="#">Setting</a>
                             <a href="../logout">Logout</a>
